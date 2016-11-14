@@ -10,23 +10,37 @@ router.use(bodyParser.urlencoded({extended : false})); //used for post or put
 router.use(bodyParser.json());
 
 
-	router.get('/', function(req, res, next){
-		res.redirect('/');
-	});
+router.get('/', function(req, res, next){
+	res.redirect('/');
+});
 
-	router.post('/', function(req, res, next){
+router.post('/', function(req, res, next){
 
-	  var page = Page.build({
-	    title: req.body.title,
-	    content: req.body.content
-	  });
+  var page = Page.build({
+    title: req.body.title,
+    content: req.body.content
+  });
 
-	  page.save();
-		res.redirect('/');
-	});
+  page.save().then(function(savedPage){
+		res.redirect(savedPage.route); // route virtual FTW
+	}).catch(next);
 
-	router.get('/add', function(req, res, next) {
-		res.render('addpage');
-	});
+});
+
+router.get('/add', function(req, res, next) {
+	res.render('addpage');
+});
+
+router.get('/:urlTitle', function (req, res, next) {
+  Page.findOne({
+    where: {
+			urlTitle: req.params.urlTitle
+		}
+  })
+  .then(function(foundPage){
+    res.render('wikipage', {foundPage: foundPage});
+  })
+  .catch(next);
+});
 
 module.exports = router;
