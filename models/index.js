@@ -1,6 +1,7 @@
+"use strict";
 const Sequelize = require('sequelize');
 const db = new Sequelize('postgres://localhost:5432/wikistack', {
-	logging : true;
+	logging : false
 });
 
 const Page = db.define('page', {
@@ -22,11 +23,20 @@ const Page = db.define('page', {
     date: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
-    },
-    route : {
-    	type: DataTypes.Virtual
     }
-});
+},
+        {
+            getterMethods   : {
+                route : function(){ return '/wiki/' + this.urlTitle; }
+            }
+        }
+    );
+
+    // ,
+    // route : {
+    // 	type: DataTypes.Virtual
+    // }
+
 
 const User = db.define('user', {
     name: {
