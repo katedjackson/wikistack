@@ -23,9 +23,9 @@ app.engine('html', nunjucks.render); // when giving html files to res.render, te
 // 	console.log("server listening");
 // });
 
-models.User.sync({})
+models.User.sync({ force: true })
 .then(function () {
-    return models.Page.sync({})
+    return models.Page.sync({ force: true })
 })
 .then(function () {
     app.listen(3001, function () {
@@ -33,3 +33,4 @@ models.User.sync({})
     });
 })
 .catch(console.error);
+

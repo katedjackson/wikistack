@@ -54,6 +54,8 @@ const User = db.define('user', {
     }
 });
 
+Page.belongsTo(User, { as: 'author' });
+
 Page.hook('beforeValidate', function (page, title) {
     if (title) {
         // Removes all non-alphanumeric characters from title
