@@ -25,10 +25,6 @@ const Page = db.define('page', {
             defaultValue: Sequelize.NOW
         }
     }, {
-        getterMethods: {
-            route : function(){ return '/wiki/' + this.urlTitle; }
-        }
-    }, {
         hooks: {
             beforeValidate: function generateUrlTitle (page, title) {
               if (title) {
@@ -40,6 +36,9 @@ const Page = db.define('page', {
                 page.urlTitle = Math.random().toString(36).substring(2, 7);
               }
             }
+        },
+        getterMethods: {
+            route : function(){ return '/wiki/' + this.urlTitle; }
         }
     });
 
@@ -54,8 +53,6 @@ const User = db.define('user', {
     }
 });
 
-Page.belongsTo(User, { as: 'author' });
-
 Page.hook('beforeValidate', function (page, title) {
     if (title) {
         // Removes all non-alphanumeric characters from title
@@ -67,6 +64,8 @@ Page.hook('beforeValidate', function (page, title) {
       }
     }
 );
+
+Page.belongsTo(User, { as: 'author' });
 
 module.exports = {
   Page: Page,

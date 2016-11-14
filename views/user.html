@@ -1,9 +1,15 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<ul>
-  {% for user in users %}
-    <li><a href="/users/{{ user.id }}">{{ user.name }}</a></li>
+
+    <h3>{{ user.name }}'s Pages<small> (<a href="/wiki/{{ user.authorId }}">Similar</a>)</small></h3>
+    <div>PLACEHOLDER TAG LIST</div>
+    <hr/>
+  {% for page in user.pages %}
+    <ul>
+      <li>
+        <a href='{{ page.route }}'>{{ page.title }}</a>
+      </li>
+    </ul>
   {% endfor %}
-</ul>
 {% endblock %}
