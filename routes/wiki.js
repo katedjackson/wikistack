@@ -2,24 +2,31 @@
 const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
-const model = require('../models/index');
+const models = require('../models/index');
+var Page = models.Page;
+var User = models.User;
 
 router.use(bodyParser.urlencoded({extended : false})); //used for post or put
 router.use(bodyParser.json());
 
 
 	router.get('/', function(req, res, next){
-		console.log("in get", req.path);
-		res.send("Hi there!");
+		res.redirect('/');
 	});
 
 	router.post('/', function(req, res, next){
-		console.log("in post");
-		res.send("Hi there!");
+
+	  var page = Page.build({
+	    title: req.body.title,
+	    content: req.body.content
+	  });
+
+	  page.save();
+		res.redirect('/');
 	});
 
 	router.get('/add', function(req, res, next) {
-  		res.render('addpage');
+		res.render('addpage');
 	});
 
 module.exports = router;
